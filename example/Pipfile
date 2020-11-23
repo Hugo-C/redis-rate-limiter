@@ -1,0 +1,19 @@
+[[source]]
+name = "pypi"
+url = "https://mirrors.cloud.tencent.com/pypi/simple"
+verify_ssl = true
+
+[dev-packages]
+black = "*"
+
+[packages]
+redis-rate-limiter = "*"
+pymongo = "*"
+fastapi = "*"
+uvicorn = "*"
+
+[requires]
+python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true
