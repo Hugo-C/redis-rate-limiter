@@ -11,7 +11,7 @@ pip install -U redis-rate-limiter
 ```python
 from redis_rate_limiter.rate_limiter import RateLimiter
 
-@RateLimiter(10, peroid=1)
+@RateLimiter(10, period=1)
 def greet():
     print('Hello')
 
