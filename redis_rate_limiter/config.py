@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 
 @dataclass
 class Settings:
-    redis_url: str = ""
+    redis_url: str = "redis://localhost:6379/0"
     key_prefix: str = field(default_factory=socket.gethostname)
 
 
