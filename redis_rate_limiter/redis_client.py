@@ -10,8 +10,5 @@ wrapper = dict(client=None)
 def get_redis_client():
     if wrapper["client"]:
         return wrapper["client"]
-    if not settings.redis_url:
-        raise ConfigError()
     client = Redis.from_url(settings.redis_url)
-    assert client.ping()
     return client
