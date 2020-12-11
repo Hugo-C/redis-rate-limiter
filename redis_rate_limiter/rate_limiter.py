@@ -6,7 +6,7 @@ from typing import Callable, Union
 
 from .config import settings
 from .exceptions import RateLimitExceeded
-from .redis_client import redis_client
+from .redis_client import get_redis_client
 
 
 class RateLimiter:
@@ -22,6 +22,7 @@ class RateLimiter:
         :param period: Size of the period, accept int(seconds) and timedelta, defaults to timedelta(minutes=1)
         :type period: Union[int, timedelta], optional
         """
+        self.redis_client = get_redis_client()
         self.limit = limit
         self.period = period.seconds if isinstance(period, timedelta) else period
 
@@ -33,10 +34,10 @@ class RateLimiter:
         :raises RateLimitExceeded: Raised when the func has been called `self.limit` times during last `self.period`
         """
         key = f"{settings.key_prefix}:{func.__name__}:{int(time.time())//self.period}"
-        if int(redis_client.incr(key)) > self.limit:
+        if int(self.redis_client.incr(key)) > self.limit:
             raise RateLimitExceeded()
-        if redis_client.ttl(key) == -1:
-            redis_client.expire(key, self.period)
+        if self.redis_client.ttl(key) == -1:
+            self.redis_client.expire(key, self.period)
 
     def __call__(self, func: Callable):
         @functools.wraps(func)
