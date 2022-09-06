@@ -5,6 +5,7 @@ license = "MIT"
 name = "redis-rate-limiter"
 readme = "README.md"
 version = "0.1.6"
+repository = "https://github.com/duyixian1234/redis-rate-limiter"
 
 [tool.poetry.dependencies]
 python = "^3.8"
