@@ -29,7 +29,7 @@ requires = ["poetry-core>=1.0.0"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--cov=redis_rate_limiter --cov-report term-missing --no-cov-on-fail --cov-fail-under=100"
+addopts = "--cov=redis_rate_limiter --cov-report term-missing --no-cov-on-fail --cov-fail-under=95"
 
 [tool.mypy]
 python_version = 3.8
