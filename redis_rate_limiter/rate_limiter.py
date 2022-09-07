@@ -4,9 +4,10 @@ import time
 from datetime import timedelta
 from typing import Callable, Union
 
+from redis_rate_limiter import redis_client
+
 from .config import settings
 from .exceptions import RateLimitExceeded
-from .redis_client import get_redis_client
 
 
 class RateLimiter:
@@ -22,7 +23,7 @@ class RateLimiter:
         :param period: Size of the period, accept int(seconds) and timedelta, defaults to timedelta(minutes=1)
         :type period: Union[int, timedelta], optional
         """
-        self.redis_client = get_redis_client()
+        self.redis_client = redis_client.get_redis_client()
         self.limit = limit
         self.period = period.seconds if isinstance(period, timedelta) else period
 
