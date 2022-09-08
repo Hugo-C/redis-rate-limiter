@@ -8,7 +8,7 @@ from redis_rate_limiter import redis_client  # noqa required by fixture
 
 @pytest.fixture(autouse=True)
 def mock_redis_client(request):
-    if 'noredismock' in request.keywords:
+    if "noredismock" in request.keywords:
         # If @pytest.mark.noredismock is set, skip the mock and return
         yield None
         return

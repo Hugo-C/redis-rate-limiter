@@ -23,7 +23,7 @@ class RateLimiter:
         :param period: Size of the period, accept int(seconds) and timedelta, defaults to timedelta(minutes=1)
         :type period: Union[int, timedelta], optional
         """
-        self.redis_client = redis_client.get_redis_client()  # TODO pass setting
+        self.redis_client = redis_client.get_redis_client()
         self.limit = limit
         self.period = period.seconds if isinstance(period, timedelta) else period
 

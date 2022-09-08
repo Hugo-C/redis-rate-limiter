@@ -4,7 +4,7 @@ from unittest import mock
 import freezegun
 import pytest
 from fakeredis import FakeStrictRedis
-from hypothesis import given
+from hypothesis import example, given
 from hypothesis import strategies as st
 
 from redis_rate_limiter.exceptions import RateLimitExceeded
@@ -114,15 +114,16 @@ def test_rate_limiter_below_limit_on_long_period_repeated():
 
 
 @pytest.mark.noredismock
-@given(st.text().filter(lambda x: x != '' and x != 0))
+@given(st.text())
+@example("")
 def test_check_str(value):
-    client = FakeStrictRedis()  # Explicitly overwrite the client as hypothesis doesn't work with fixtures
+    # Explicitly overwrite the client as hypothesis doesn't reset fixtures
+    client = FakeStrictRedis()
     with mock.patch(
         "redis_rate_limiter.redis_client.get_redis_client", autospec=True
     ) as mocked_get_redis_client:
         mocked_get_redis_client.return_value = client
 
-        print(value)
         limit = 10
         rate_limiter = RateLimiter(limit, period=10)
         for i in range(limit):
