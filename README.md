@@ -1,5 +1,7 @@
 # redis-rate-limiter
 
+[![CI](https://github.com/duyixian1234/redis-rate-limiter/actions/workflows/CI.yml/badge.svg?branch=master)](https://github.com/duyixian1234/redis-rate-limiter/actions/workflows/CI.yml)
+
 ## Install
 
 ```bash
