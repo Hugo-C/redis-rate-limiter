@@ -26,7 +26,7 @@ jobs:
         run: make test
       - name: Publish Package
         env:
-          PYPI_TOKEN: ${{ secrets.PYPI__TOKEN }}
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         run: |
           poetry config pypi-token.pypi $PYPI_TOKEN
           poetry publish --build
