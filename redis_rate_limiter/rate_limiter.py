@@ -34,7 +34,16 @@ class RateLimiter:
         :type func: Callable
         :raises RateLimitExceeded: Raised when the func has been called `self.limit` times during last `self.period`
         """
-        key = f"{settings.key_prefix}:{func.__name__}:{int(time.time())//self.period}"
+        self.check_str(func.__name__)
+
+    def check_str(self, value: str):
+        """Check if a given value has been check less than the rate limit
+
+        :param value: the value to check
+        :type value: str
+        :raises RateLimitExceeded: Raised when the value has been checked `self.limit` times during last `self.period`
+        """
+        key = f"{settings.key_prefix}:{value}:{int(time.time())//self.period}"
         if int(self.redis_client.incr(key)) > self.limit:
             raise RateLimitExceeded()
         if self.redis_client.ttl(key) == -1:

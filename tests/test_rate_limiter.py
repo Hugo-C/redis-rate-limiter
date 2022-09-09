@@ -1,8 +1,11 @@
 import datetime
+from unittest import mock
 
 import freezegun
 import pytest
 from fakeredis import FakeStrictRedis
+from hypothesis import example, given
+from hypothesis import strategies as st
 
 from redis_rate_limiter.exceptions import RateLimitExceeded
 from redis_rate_limiter.rate_limiter import RateLimiter
@@ -108,3 +111,22 @@ def test_rate_limiter_below_limit_on_long_period_repeated():
                 assert f() == 42
             frozen_datetime.tick(delta=datetime.timedelta(seconds=5))
     assert call_count == expected_successful_call
+
+
+@pytest.mark.noredismock
+@given(st.text())
+@example("")
+def test_check_str(value):
+    # Explicitly overwrite the client as hypothesis doesn't reset fixtures
+    client = FakeStrictRedis()
+    with mock.patch(
+        "redis_rate_limiter.redis_client.get_redis_client", autospec=True
+    ) as mocked_get_redis_client:
+        mocked_get_redis_client.return_value = client
+
+        limit = 10
+        rate_limiter = RateLimiter(limit, period=10)
+        for i in range(limit):
+            rate_limiter.check_str(value)
+        with pytest.raises(RateLimitExceeded):
+            rate_limiter.check_str(value)  # The call above the rate limit

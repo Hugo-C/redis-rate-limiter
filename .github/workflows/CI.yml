@@ -22,12 +22,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install poetry
         poetry update
-    - name: Lint with pylint
-      run: |
-        poetry run pylint redis_rate_limiter
-    - name: Check type
-      run: |
-        poetry run mypy redis_rate_limiter
+    - name: Lint
+      run: make lint
     - name: Test with pytest
-      run: |
-        poetry run pytest
+      run: make test

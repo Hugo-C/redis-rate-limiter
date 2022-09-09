@@ -12,4 +12,4 @@ fix_isort:
 	poetry run isort --line-length 120 .
 
 test:
-	pytest
+	poetry run pytest --hypothesis-show-statistics
